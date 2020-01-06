@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "traceabilitytool", "traceability_tool\traceabilitytool.csproj", "{D652AD20-87EF-4D15-B802-8ABEB5A6D66D}"
 EndProject
@@ -9,14 +9,20 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		RelWithDebInfo|Any CPU = RelWithDebInfo|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D652AD20-87EF-4D15-B802-8ABEB5A6D66D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D652AD20-87EF-4D15-B802-8ABEB5A6D66D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D652AD20-87EF-4D15-B802-8ABEB5A6D66D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D652AD20-87EF-4D15-B802-8ABEB5A6D66D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D652AD20-87EF-4D15-B802-8ABEB5A6D66D}.RelWithDebInfo|Any CPU.ActiveCfg = RelWithDebInfo|Any CPU
+		{D652AD20-87EF-4D15-B802-8ABEB5A6D66D}.RelWithDebInfo|Any CPU.Build.0 = RelWithDebInfo|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {45AC1C3A-1796-42A7-BAE6-2A41D9F04F49}
 	EndGlobalSection
 EndGlobal
