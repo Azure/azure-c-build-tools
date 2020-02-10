@@ -57,7 +57,6 @@ function(c_windows_tests_add_dll whatIsBuilding folder)
     )
 
     target_compile_definitions(${whatIsBuilding}_dll PUBLIC -DCPP_UNITTEST)
-    target_compile_options(${whatIsBuilding}_dll PUBLIC /TP /EHsc)
     target_include_directories(${whatIsBuilding}_dll PUBLIC ${sharedutil_include_directories} $ENV{VCInstallDir}UnitTest/include)
 
     set_target_properties(${whatIsBuilding}_dll
@@ -66,11 +65,7 @@ function(c_windows_tests_add_dll whatIsBuilding folder)
 
     set_source_files_properties(${${whatIsBuilding}_c_files} ${logging_files}
                PROPERTIES
-               COMPILE_FLAGS /TC)
-
-    set_source_files_properties(${${whatIsBuilding}_cpp_files}
-               PROPERTIES
-               COMPILE_FLAGS /TP)
+               LANGUAGE C)
 
     if (TARGET umock_c)
         target_link_libraries(${whatIsBuilding}_dll umock_c)
@@ -115,6 +110,10 @@ function(c_windows_tests_add_dll whatIsBuilding folder)
 endfunction()
 
 function(c_windows_tests_add_exe whatIsBuilding folder)
+    set_source_files_properties(${${whatIsBuilding}_test_files} ${logging_files}
+               PROPERTIES
+               LANGUAGE C)
+
     add_executable(${whatIsBuilding}_exe
         ${${whatIsBuilding}_test_files}
         ${${whatIsBuilding}_cpp_files}
@@ -125,7 +124,7 @@ function(c_windows_tests_add_exe whatIsBuilding folder)
     )
     set_target_properties(${whatIsBuilding}_exe
                PROPERTIES
-               FOLDER ${folder})
+               FOLDER ${folder} LANGUAGE C)
 
     target_compile_definitions(${whatIsBuilding}_exe PUBLIC -DUSE_CTEST)
     target_include_directories(${whatIsBuilding}_exe PUBLIC ${sharedutil_include_directories})
