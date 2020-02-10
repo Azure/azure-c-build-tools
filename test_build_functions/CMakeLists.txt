@@ -48,29 +48,17 @@ endfunction()
 function(c_windows_tests_add_dll whatIsBuilding folder)
     link_directories(${whatIsBuilding}_dll $ENV{VCInstallDir}UnitTest/lib)
 
-    add_library(${whatIsBuilding}_testsonly_lib STATIC
-            ${${whatIsBuilding}_test_files}
-    )
-    SET(VAR 1)
-    foreach(file ${${whatIsBuilding}_test_files})
-        set_source_files_properties(${file} PROPERTIES COMPILE_FLAGS -DCPPUNITTEST_SYMBOL=some_symbol_for_cppunittest_${VAR})
-        MATH(EXPR VAR "${VAR}+1")
-    endforeach()
-
-    set_target_properties(${whatIsBuilding}_testsonly_lib
-               PROPERTIES
-               FOLDER ${folder} )
-
-    target_include_directories(${whatIsBuilding}_testsonly_lib PUBLIC ${sharedutil_include_directories} $ENV{VCInstallDir}UnitTest/include)
-    target_compile_definitions(${whatIsBuilding}_testsonly_lib PUBLIC -DCPP_UNITTEST)
-    target_compile_options(${whatIsBuilding}_testsonly_lib PUBLIC /TP /EHsc)
-
     add_library(${whatIsBuilding}_dll SHARED
         ${${whatIsBuilding}_cpp_files}
         ${${whatIsBuilding}_h_files}
         ${${whatIsBuilding}_c_files}
         ${logging_files}
+        ${${whatIsBuilding}_test_files}
     )
+
+    target_compile_definitions(${whatIsBuilding}_dll PUBLIC -DCPP_UNITTEST)
+    target_compile_options(${whatIsBuilding}_dll PUBLIC /TP /EHsc)
+    target_include_directories(${whatIsBuilding}_dll PUBLIC ${sharedutil_include_directories} $ENV{VCInstallDir}UnitTest/include)
 
     set_target_properties(${whatIsBuilding}_dll
                PROPERTIES
@@ -93,8 +81,6 @@ function(c_windows_tests_add_dll whatIsBuilding folder)
     if (TARGET testrunnerswitcher)
         target_link_libraries(${whatIsBuilding}_dll testrunnerswitcher)
     endif()
-
-    target_link_libraries(${whatIsBuilding}_dll ${whatIsBuilding}_testsonly_lib )
 
     set(PARSING_ADDITIONAL_LIBS OFF)
     set(PARSING_VALGRIND_SUPPRESSIONS_FILE OFF)
@@ -120,24 +106,11 @@ function(c_windows_tests_add_dll whatIsBuilding folder)
                     SET(ARG_PREFIX ${f})
                 else()
                     target_link_libraries_with_arg_prefix(${ARG_PREFIX} ${whatIsBuilding}_dll ${f})
-                    target_link_libraries_with_arg_prefix(${ARG_PREFIX} ${whatIsBuilding}_testsonly_lib ${f})
                     set(ARG_PREFIX "none")
                 endif()
             endif()
         endif()
 
-    endforeach()
-
-    SET(SPACES " ")
-    SET(VAR 1)
-    foreach(file ${${whatIsBuilding}_test_files})
-        # for x64 the underscore is not needed
-        if (ARCHITECTURE STREQUAL "x86_64" OR ARCHITECTURE STREQUAL "ARM")
-            set_property(TARGET ${whatIsBuilding}_dll APPEND_STRING PROPERTY LINK_FLAGS ${SPACES}/INCLUDE:"some_symbol_for_cppunittest_${VAR}")
-        else()
-            set_property(TARGET ${whatIsBuilding}_dll APPEND_STRING PROPERTY LINK_FLAGS ${SPACES}/INCLUDE:"_some_symbol_for_cppunittest_${VAR}")
-        endif()
-        MATH(EXPR VAR "${VAR}+1")
     endforeach()
 endfunction()
 
