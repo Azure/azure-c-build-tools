@@ -10,6 +10,7 @@ jobs:
     - Cmd
     - msbuild
     - visualstudio
+    - npm
   steps:
   - task: BatchScript@1
     displayName: 'Setup VS Vars'
